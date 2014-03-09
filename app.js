@@ -4,10 +4,10 @@ var express = require('express'),
 	server = http.createServer(app),
 	io = require('socket.io').listen(server);
 
+// to serve images
 app.use(express.static(__dirname + '/public/'));
 	
 // routing
-
 app.get("/", function(req, res) {
 	res.sendfile(__dirname + '/index.html');
 });
@@ -20,6 +20,15 @@ io.sockets.on('connection', function(socket) {
 
 	// when the client emits sendchat, this listens and executes
 	socket.on('sendchat', function(data) {
+		//if a note has been made, write to notes.txt
+		if (data.substring(0,5) == "/note") {
+			var fs = require('fs');
+			var wstream = fs.createWriteStream('notes.txt', { flags: 'a',
+  			encoding: null,
+  			mode: 0666 });
+			wstream.write(data+'\n');
+			wstream.end();
+		}
 		// tell the client to execute updatechat with 2 paramaters
 		io.sockets.emit('updatechat', socket.username, data);
 	});
