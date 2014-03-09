@@ -1,0 +1,114 @@
+<head>
+
+<style>
+div.background
+  {
+  background:url('../images/back.jpg') repeat;
+  border:2px solid black;
+  }
+div.transbox
+  {
+  width:800px;
+  height:600px;
+  margin:30px 50px;
+  background-color:#ffffff;
+  border:1px solid black;
+  opacity:0.8;
+  filter:alpha(opacity=80); /* For IE8 and earlier */
+  }
+</style>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script>
+  var socket = io.connect('http://localhost:3000');
+
+  // on connection to server, ask for user's name with an anonymous callback
+  socket.on('connect', function(){
+    // call the server-side function 'adduser' and send one parameter (value of prompt)
+    socket.emit('adduser', prompt("What's your name?"));
+  });
+
+  // listener, whenever the server emits 'updatechat', this updates the chat body
+  // typing /d6, /d10 or /d20 generates a random number
+  // typing /note at the start of the line outputs to the noteboard instead of the chat
+  socket.on('updatechat', function (username, data) {
+	if (data.substring(0,5) == "/note") {
+	$('#notes').append(data.substr(6) + '<br>');
+	} else {
+  	if (data == "/d10") {
+  		data = "rolls d10: " + Math.floor((Math.random()*10)+1);
+  	}
+  	if (data == "/d20") {
+  		data = "rolls d20: " + Math.floor((Math.random()*20)+1);
+  	}
+  	if (data == "/d6") {
+  		data = "rolls d6: " + Math.floor((Math.random()*6)+1);
+  	}
+    $('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
+    }
+  });
+
+  // listener, whenever the server emits 'updateusers', this updates the username list
+  socket.on('updateusers', function(data) {
+    $('#users').empty();
+    $.each(data, function(key, value) {
+      $('#users').append('<div>' + key + '</div>');
+    });
+  });
+
+  // on load of page
+  $(function(){
+    // when the client clicks SEND
+    $('#datasend').click( function() {
+      var message = $('#data').val();
+      $('#data').val('');
+      // tell server to execute 'sendchat' and send along one parameter
+      socket.emit('sendchat', message);
+    });
+
+    // when the client hits ENTER on their keyboard
+    $('#data').keypress(function(e) {
+      if(e.which == 13) {
+        $(this).blur();
+        $('#datasend').focus().click();
+      }
+    });
+  });
+
+</script>
+
+</head>
+
+<body>
+<div class="background">
+<div class="transbox">
+
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+  <b>USERS</b>
+  <div id="users"></div>
+</div>
+
+<div style="float:left;width:300px;height:300px;overflow:scroll-y;padding:10px;">
+  <div id="conversation"></div>
+  <input id="data" style="width:200px;" />
+  <input type="button" id="datasend" value="send" />
+</div>
+
+<div style="float:left;width:300px;border-left:1px solid black;height:300px;overflow:scroll-y;padding:10px;">
+  <b>NOTES</b>
+  <div id="notes"></div>
+</div>
+
+<div style="float:bottom;width:800px;height:300px;overflow:scroll-y;padding:10px;">
+  <b>Instructions:</b><br>
+  Type /note (whatever) to output to the noteboard</br>
+  Type /d6 to roll a six sided die</br>
+  Type /d10 to roll a ten sided die</br>
+  Type /d20 to roll a twenty sided die</br>
+  <div id="infos"></div>
+</div>
+</div>
+</div>
+
+</body>
