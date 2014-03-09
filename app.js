@@ -23,10 +23,11 @@ io.sockets.on('connection', function(socket) {
 		//if a note has been made, write to notes.txt
 		if (data.substring(0,5) == "/note") {
 			var fs = require('fs');
-			var wstream = fs.createWriteStream('notes.txt', { flags: 'a',
+			//open writestream with append
+			var wstream = fs.createWriteStream('./public/notes.txt', { flags: 'a',
   			encoding: null,
   			mode: 0666 });
-			wstream.write(data+'\n');
+			wstream.write(data.substr(6)+'\n');
 			wstream.end();
 		}
 		// tell the client to execute updatechat with 2 paramaters
