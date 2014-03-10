@@ -1,0 +1,5 @@
+3.3 	2h	Noden ihmettelyä, aiheen valintaa, github tunnarit
+4.3 	1h	Graafinen githubclentti, noden opiskelua
+5.3		2h	Hello World -tutoriaali
+9.3 	9h	Koodailua, toimiva versio
+10.3 	1h	Pientä viilailua
