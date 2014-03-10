@@ -10,7 +10,7 @@ div.transbox
   {
   width:800px;
   height:600px;
-  margin:30px 50px;
+  margin:30px 30px;
   background-color:#ffffff;
   border:1px solid black;
   opacity:0.8;
@@ -62,6 +62,7 @@ div.transbox
       if(e.which == 13) {
         $(this).blur();
         $('#datasend').focus().click();
+        $('#data').focus();
       }
     });
   });
@@ -74,23 +75,23 @@ div.transbox
 <div class="background">
 <div class="transbox">
 
-<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll;">
   <b>USERS</b>
   <div id="users"></div>
 </div>
 
-<div style="float:left;width:300px;height:300px;overflow:scroll-y;padding:10px;">
+<div style="float:left;width:300px;height:300px;overflow:scroll;padding:10px;">
   <div id="conversation"></div>
   <input id="data" style="width:200px;" />
   <input type="button" id="datasend" value="send" />
 </div>
 
-<div style="float:left;width:300px;border-left:1px solid black;height:300px;overflow:scroll-y;padding:10px;">
+<div style="float:left;width:300px;border-left:1px solid black;height:300px;overflow:scroll;padding:10px;">
   <a href='http://localhost:3000/notes.txt' target='_blank'><b>NOTES</b></a>
   <div id="notes"></div>
 </div>
 
-<div style="float:bottom;width:800px;height:300px;overflow:scroll-y;padding:10px;">
+<div style="float:bottom;width:800px;height:300px;overflow:scroll;padding:10px;">
   <b>Instructions:</b><br>
   Type /note (whatever) to output to the noteboard</br>
   Type /d6 to roll a six sided die</br>
