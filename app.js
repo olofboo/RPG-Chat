@@ -30,6 +30,18 @@ io.sockets.on('connection', function(socket) {
 			wstream.write(data.substr(6)+'\n');
 			wstream.end();
 		}
+		//if a dice has been rolled, generate a random number
+		if (data == "/d10") {
+  			data = "rolls d10: " + Math.floor((Math.random()*10)+1);
+  		}
+  		if (data == "/d20") {
+  			data = "rolls d20: " + Math.floor((Math.random()*20)+1);
+  		}
+  		if (data == "/d6") {
+  			data = "rolls d6: " + Math.floor((Math.random()*6)+1);
+  		}
+    
+		
 		// tell the client to execute updatechat with 2 paramaters
 		io.sockets.emit('updatechat', socket.username, data);
 	});

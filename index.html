@@ -30,22 +30,12 @@ div.transbox
   });
 
   // listener, whenever the server emits 'updatechat', this updates the chat body
-  // typing /d6, /d10 or /d20 generates a random number
   // typing /note at the start of the line outputs to the noteboard instead of the chat
   socket.on('updatechat', function (username, data) {
 	if (data.substring(0,5) == "/note") {
 	$('#notes').append(data.substr(6) + '<br>');
 	} else {
-  	if (data == "/d10") {
-  		data = "rolls d10: " + Math.floor((Math.random()*10)+1);
-  	}
-  	if (data == "/d20") {
-  		data = "rolls d20: " + Math.floor((Math.random()*20)+1);
-  	}
-  	if (data == "/d6") {
-  		data = "rolls d6: " + Math.floor((Math.random()*6)+1);
-  	}
-    $('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
+  	$('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
     }
   });
 
